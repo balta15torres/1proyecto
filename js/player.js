@@ -1,8 +1,8 @@
 function Player(game) {
 
     this.game = game
-    this.speedX = 1
-    this.speedY = 0.5
+    this.speedX = 5
+    this.speedY = 6
     this.x = 50
     // guardar posición original (suelo)
     this.y0 = this.game.canvas.height / 1.7
@@ -26,7 +26,7 @@ Player.prototype.pintar = function () {
 
 Player.prototype.mover = function () {
 
-    var gravity = 0.5
+    var gravity = 0.4
     // solo salta cuando el personaje está en el suelo
     if (this.y >= this.y0) {
         this.vy = 1
@@ -45,7 +45,7 @@ Player.prototype.setListeners = function () {
         if (event.keyCode === this.game.keys.TOP_KEY && this.y == this.y0) {
 
             this.y -= 5
-            this.vy -= 18
+            this.vy -= 16
 
         }
     }.bind(this)
