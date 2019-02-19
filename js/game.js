@@ -3,7 +3,7 @@ var Game = {
     canvas: undefined,
     ctx: undefined,
     fps: 60,
-    //scoreBoard: undefined,
+    scoreBoard: undefined,
     keys: {
         TOP_KEY: 38,
         SPACE: 32,
@@ -27,27 +27,34 @@ var Game = {
 
         this.interval = setInterval(function () {
             this.clear()
-            this.colision()
+            this.colisionObsta()
+            this.colisionRecom()
 
             this.framesCounter++
 
-            if (this.framesCounter > 500) {
+            if (this.framesCounter > 1000) {
 
                 this.framesCounter = 0
 
             }
 
-            if (this.framesCounter % 80 === 0) {
-
+            if (this.framesCounter % 111 === 0 || this.framesCounter % 200 == 0) {
+                
+                
                 this.hacerObstaculos()
                 this.hacerRecompesas()
-            
+
             }
-            
+            //this.score += 0.01
+            // if(this.colisionRecom() === true){
+            //     this.score ++
+                
+            //}
+
             this.moverTodo()
             this.pintarTodo()
             this.borrarObstaculos()
-        
+
         }.bind(this), 1000 / this.fps)
     },
 
@@ -56,8 +63,8 @@ var Game = {
         this.background.pintar()
         this.player.pintar()
         this.obstaculos.forEach(function (obstaculo) { obstaculo.pintar() })
-        this.recompensas.forEach(function(recompensa) {recompensa.pintar() })
-    
+        this.recompensas.forEach(function (recompensa) { recompensa.pintar() })
+        this.pintarMarcador()
     },
 
     moverTodo: function () {
@@ -65,18 +72,21 @@ var Game = {
         this.background.mover()
         this.player.mover()
         this.obstaculos.forEach(function (obstaculo) { obstaculo.mover() })
-
-},
+        this.recompensas.forEach(function (recompensa) { recompensa.mover() })
+        
+    },
 
     reset: function () {
 
         this.background = new Background(this)
         this.player = new Player(this)
         this.obstaculos = new Obstaculos(this)
+        this.recompensas = new Recompensas(this)
+        this.marcador = marcador
         this.framesCounter = 0
         this.obstaculos = []
         this.recompensas = []
-    
+        this.score = 0
     },
 
     clear: function () {
@@ -85,39 +95,72 @@ var Game = {
 
     },
 
-    colision: function () {
-        
+    colisionObsta: function () {
+
         this.obstaculos.forEach(function (cadaObstaculo) {
             if (this.player.x + this.player.w >= cadaObstaculo.x &&
                 this.player.x <= cadaObstaculo.w + cadaObstaculo.x &&
-                this.player.y + this.player.h >= cadaObstaculo.y) {
-                alert ("noo!")
-            
+                this.player.y + this.player.h >= cadaObstaculo.y && this.player.x + this.player.w > cadaObstaculo.x + cadaObstaculo.w / 4 && this.player.y + this.player.h > cadaObstaculo.y + cadaObstaculo.h / 3) {
+                alert("noo!")
+
             }
-    }.bind(this))
+        }.bind(this))
     },
-    
-    hacerObstaculos: function() {
 
-        this.obstaculos.push(new Obstaculos(this))
+    colisionRecom: function () {
+
+        this.recompensas.forEach(function (cadaRecompesa, index) {
+            if (this.player.x + this.player.w >= cadaRecompesa.x &&
+                this.player.x <= cadaRecompesa.w + cadaRecompesa.x &&
+                this.player.y + this.player.h >= cadaRecompesa.y ) {
+                
+                    this.recompensas.shift([0]) && this.score ++
+                    
+            }
+
+        }.bind(this))
+    },
+
+    hacerObstaculos: function () {
+
+        var src
+        if (this.framesCounter % 2) {
+            src = "images/torillo1.png"
+        } else {
+            src = "images/torillo2.png"
+        }
+
+        this.obstaculos.push(new Obstaculos(this, src))
 
     },
-    
-    borrarObstaculos: function() {
-        
+
+    borrarObstaculos: function () {
+
         this.obstaculos = this.obstaculos.filter(function (obstaculo) {
-         return obstaculo.x >= 0
-            
-        
+            return obstaculo.x + obstaculo.w >= 0
+
+
         });
     },
 
     hacerRecompesas: function() {
-        
-        this.recompensas.push(new Recompensas(this))
-    
+
+        var src
+        if (this.framesCounter % 2) {
+            src = "images/martillo.png"
+        } else {
+            src = "images/metro.png"
+        }
+
+        this.recompensas.push(new Recompensas(this, src))
+
     },
 
+    pintarMarcador: function() {
+        
+        this.marcador.update(this.score, this.ctx)
+    
+    },
 
 
 }
