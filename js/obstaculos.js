@@ -1,4 +1,4 @@
-function Obstaculos(game, src, w, h ) {
+function Obstaculos(game, src, w, h,y ) {
     this.game = game
     //medidas de la imagen a representar en el canvas
     this.w = w 
@@ -6,7 +6,7 @@ function Obstaculos(game, src, w, h ) {
     
     this.dx = 10
     this.x = this.game.canvas.width
-    this.y = this.game.player.y0
+    this.y = y
     this.img = new Image()
     this.img.src = src
 }

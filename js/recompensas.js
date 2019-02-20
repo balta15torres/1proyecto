@@ -5,7 +5,8 @@ function Recompensas(game, src) {
     this.h = 40
     this.dx = 10
     this.x = this.game.canvas.width
-    this.y = this.game.player.y0 / 2
+    this.y = Math.floor(Math.random() * this.game.canvas.height * 0.6) + this.game.canvas.height * 0.2
+    
     this.img = new Image()
     this.img.src = src
 }
