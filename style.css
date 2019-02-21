@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+#home {
+    background-image: url(./images/fondo.png);
+    width: 100%;
+    background-size: cover;
+}
+#start-button{
+    display: block;
+    margin: auto;
+    text-align: center;
+    width: 360px;
+    height: 100px;
+    margin-top: 100px;
+    color: #563315;
+    font-size: -webkit-xxx-large;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+    
+.none{
+    display: none
+}
+
+.logo {
+    display: block;
+    width: 40%;
+    height: 250px;
+    margin:auto;
+    padding-top: 100px;
+}
+
+.home1 {
+    height: 500px;
+}
+
+.home2 {
+    height: 500px;  
+}

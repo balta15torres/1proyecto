@@ -15,12 +15,23 @@
     <script type="text/javascript" src="js/marcador.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div id="home">
+        <img src="./images/logo.png" class="logo" alt="">
+        <button id="start-button">StartGame</button>
+        <img src="./images/home1.png"  class="home1" alt="">
+        <img src="./images/home2.png" class="home2"alt="">
+    </div>
+    <div id="gameOver" style="display : none">
+        <img src="./images/over.png" class="over" alt="">
+        <h1>GAME OVER</h1>
 
-    <canvas id="canvas"></canvas>
+    </div>
+
+    <canvas id="canvas" class="none"></canvas>
 
 </body>
 

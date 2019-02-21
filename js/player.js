@@ -18,12 +18,27 @@ function Player(game) {
     this.inmortal = false
     this.setListeners()
 
+    this.imgJump = new Image();
+    this.imgJump.src = 'images/saltar.png'
+    this.imgJump.frames = 4
+    this.imgJump.frameIndex = 0
+    this.isJumping = false
+
 }
 
 Player.prototype.pintar = function() {
+    var img;
 
-    this.game.ctx.drawImage(this.img, this.img.frameIndex * Math.floor(this.img.width / this.img.frames), 0, Math.floor(this.img.width / this.img.frames), this.img.height, this.x, this.y, this.w, this.h)
-    this.moverImg()
+    
+    if (this.isJumping) {
+        img = this.imgJump;
+        this.moverImg(this.imgJump)
+    } else {
+        img = this.img;
+        this.moverImg(this.img)
+    }
+    this.game.ctx.drawImage(img, img.frameIndex * Math.floor(img.width / img.frames), 0, Math.floor(img.width / img.frames), img.height, this.x, this.y, this.w, this.h)
+    
 },
 
     Player.prototype.mover = function() {
@@ -50,23 +65,24 @@ Player.prototype.setListeners = function() {
 
             this.vy -= 15
 
-        }if (event.keyCode === this.game.keys.TOP_KEY){
-            this.img.src = "saltar.png"
+            this.isJumping = true
         }
+        
     }.bind(this)
 }
 
-Player.prototype.moverImg = function() {
+Player.prototype.moverImg = function(img) {
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
     if (this.game.framesCounter % 8 === 0) {
-        this.img.frameIndex += 1
+        img.frameIndex += 1
 
         // Si el frame es el último, se vuelve al primero
-        if (this.img.frameIndex > 3) this.img.frameIndex = 0
+        if (img.frameIndex > 3) {
+            img.frameIndex = 0
+            this.isJumping = false
+        }
+
     }
 
-    Player.prototype.saltarImg = function() {
-
-    }
 }
 

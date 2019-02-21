@@ -7,6 +7,7 @@ var Game = {
         TOP_KEY: 38,
         SPACE: 32,
     },
+    
 
     init: function(id) {
         this.canvas = document.getElementById(id)
@@ -15,16 +16,20 @@ var Game = {
         this.h = window.innerHeight
         this.canvas.width = this.w
         this.canvas.height = this.h
-        
+        this.soniFond = new Audio("sonido/fondo.mp3")
+        this.soniFacil = new Audio("sonido/facil.mp3")
+        this.gameOverImage = new Image();
+        this.gameOverImage.src = "images/over.png"
         this.reset()
         this.start()
     },
 
     start: function() {
+        
+        this.soniFond.play()
         this.interval = setInterval(function () {
-            console.log(this.tiempo)
+            
             this.clear()
-            this.colisionObsta()
             this.colisionRecom()
             
             this.framesCounter++
@@ -34,19 +39,16 @@ var Game = {
             }
             if(this.framesCounter % 100 === 0) {
                 this.hacerObstaculos()
-
+                
             }
             if(this.framesCounter % 80 === 0) {
                 this.hacerRecompesas()
             }
-            // if (this.scores === 0.20){
-            //     this.player.mover() ++ this.speedX 
-            // }
-            
             this.scores += 0.01;
             this.moverTodo()
             this.pintarTodo()
             this.borrarObstaculos()
+            this.colisionObsta()
         }.bind(this), 1000 / this.fps)
     },
 
@@ -103,8 +105,8 @@ var Game = {
                     this.score += 10
                 }else if (cadaRecompesa.img.src.includes("images/sierra.png")) {
                     this.score -= 25
-                }else if (cadaRecompesa.img.src.includes("images/caja-premio.png")){
-                    this.player.inmortal = true 
+                }else if (cadaRecompesa.img.src.includes("images/caja.png")){
+                    this.player.inmortal = true && this.soniFacil.play()
                     setTimeout(function(){
                         this.player.inmortal = false
                     }.bind(this),4000)
@@ -153,9 +155,9 @@ var Game = {
             dx = 11
         }if(this.scores > 6){
             dx = 14
-        } if (this.scores > 12){
+        } if (this.scores > 14){
             dx = 18
-        } if (this.scores > 18){
+        } if (this.scores > 20){
             dx = 20
         }
          
@@ -173,11 +175,19 @@ var Game = {
     },
     
     gameOver: function() {
+        
         this.stop()
-        if (confirm("GAME OVER. Play again?")) {
-            this.reset()
-            this.start()
+        this.ctx.drawImage(this.gameOverImage, 360, 80, 500, 600)
+        // document.getElementById("gameOver").style.display = "block"
+        console.log(this.gameOverImage)
+        if( this.colisionObsta){
+            document.getElementsByClassName("over")
         }
+        
+            
+            // this.reset()
+            // this.start()
+        
     },
     
     hacerRecompesas: function() {
@@ -190,7 +200,7 @@ var Game = {
         } else if (random >= 51 && random <= 90) {
             src = "images/metro.png"
         }else {
-            src = "images/caja-premio.png"
+            src = "images/caja.png"
          }
         this.recompensas.push(new Recompensas(this, src))
     },
