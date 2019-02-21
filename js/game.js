@@ -8,38 +8,41 @@ var Game = {
         SPACE: 32,
     },
 
-    init: function (id) {
+    init: function(id) {
         this.canvas = document.getElementById(id)
         this.ctx = this.canvas.getContext("2d")
         this.w = window.innerWidth
         this.h = window.innerHeight
         this.canvas.width = this.w
         this.canvas.height = this.h
+        
         this.reset()
         this.start()
     },
 
-    start: function () {
+    start: function() {
         this.interval = setInterval(function () {
+            console.log(this.tiempo)
             this.clear()
             this.colisionObsta()
             this.colisionRecom()
             
             this.framesCounter++
             
-            if (this.framesCounter > 799) {
+            if(this.framesCounter > 799) {
                 this.framesCounter = 0
             }
-            if (this.framesCounter % 100 === 0) {
+            if(this.framesCounter % 100 === 0) {
                 this.hacerObstaculos()
 
             }
-            if (this.framesCounter % 80 === 0) {
+            if(this.framesCounter % 80 === 0) {
                 this.hacerRecompesas()
             }
             // if (this.scores === 0.20){
             //     this.player.mover() ++ this.speedX 
             // }
+            
             this.scores += 0.01;
             this.moverTodo()
             this.pintarTodo()
@@ -47,7 +50,7 @@ var Game = {
         }.bind(this), 1000 / this.fps)
     },
 
-    pintarTodo: function () {
+    pintarTodo: function() {
         this.background.pintar()
         this.player.pintar()
         this.obstaculos.forEach(function (obstaculo) { obstaculo.pintar() })
@@ -55,14 +58,14 @@ var Game = {
         this.pintarMarcador()
     },
 
-    moverTodo: function () {
+    moverTodo: function() {
         this.background.mover()
         this.player.mover()
         this.obstaculos.forEach(function (obstaculo) { obstaculo.mover() })
         this.recompensas.forEach(function (recompensa) { recompensa.mover() })
     },
 
-    reset: function () {
+    reset: function() {
         this.background = new Background(this)
         this.player = new Player(this)
         this.puntuacion = puntuacion
@@ -72,13 +75,14 @@ var Game = {
         this.recompensas = []
         this.score = 0
         this.scores = 0
+    
     },
 
-    clear: function () {
+    clear: function() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     },
 
-    colisionObsta: function () {
+    colisionObsta: function() {
         this.obstaculos.forEach(function (cadaObstaculo) {
             if (this.player.x + this.player.w >= cadaObstaculo.x &&
                 this.player.x <= cadaObstaculo.w + cadaObstaculo.x &&
@@ -88,48 +92,52 @@ var Game = {
         }.bind(this))
     },
 
-    colisionRecom: function () {
+    colisionRecom: function() {
         this.recompensas.forEach(function (cadaRecompesa, index) {
-            if (this.player.x + this.player.w >= cadaRecompesa.x &&
+            if(this.player.x + this.player.w >= cadaRecompesa.x &&
                 this.player.x <= cadaRecompesa.w + cadaRecompesa.x &&
                 this.player.y + this.player.h >= cadaRecompesa.y) {
-                if (cadaRecompesa.img.src.includes("images/martillo.png")) {
+                if(cadaRecompesa.img.src.includes("images/martillo.png")) {
                     this.score += 30
-                } else if (cadaRecompesa.img.src.includes("images/metro.png")) {
+                }else if (cadaRecompesa.img.src.includes("images/metro.png")) {
                     this.score += 10
-                } else if (cadaRecompesa.img.src.includes("images/sierra.png")) {
+                }else if (cadaRecompesa.img.src.includes("images/sierra.png")) {
                     this.score -= 25
-                } else if (cadaRecompesa.img.src.includes("images/caja.png")){
+                }else if (cadaRecompesa.img.src.includes("images/caja-premio.png")){
                     this.player.inmortal = true 
                     setTimeout(function(){
                         this.player.inmortal = false
-                    }.bind(this),5000)
+                    }.bind(this),4000)
                 }else {
                     this.score++
                 }
                 this.recompensas.shift([0])
             }
-            if (this.scores >= 100) {
+            if(this.scores >= 100) {
                 //alert("SIII")
             }
         }.bind(this))
     },
 
-    hacerObstaculos: function () {
-        var src, w, h, y
+    hacerObstaculos: function() {
+        var src, w, h, y 
         var random = this.selectRandom()
+        
+        var dx = 10
+        
 
-        if (random >= 1 && random <= 25) {
+
+        if(random >= 1 && random <= 25) {
             src = "images/torillo1.png"
             w = 200
             h = 200
             y = 450
-        } else if (random >= 26 && random <= 50) {
+        } else if(random >= 26 && random <= 50) {
             src = "images/carreta1.png"
             w = 100
             h = 130
             y = 520
-        } else if (random >= 51 && random <= 75) {
+        } else if(random >= 51 && random <= 75) {
             src = "images/torillo2.png"
             w = 200
             h = 200
@@ -140,21 +148,31 @@ var Game = {
             h = 130
             y = 520
         }
-
-        this.obstaculos.push(new Obstaculos(this, src, w, h, y))
+        
+        if(this.scores > 0){
+            dx = 11
+        }if(this.scores > 6){
+            dx = 14
+        } if (this.scores > 12){
+            dx = 18
+        } if (this.scores > 18){
+            dx = 20
+        }
+         
+        this.obstaculos.push(new Obstaculos(this, src, w, h, y, dx))
     },
     
-    borrarObstaculos: function () {
+    borrarObstaculos: function() {
         this.obstaculos = this.obstaculos.filter(function (obstaculo) {
             return obstaculo.x + obstaculo.w >= 0
         });
     },
 
-    stop: function () {
+    stop: function() {
         clearInterval(this.interval)
     },
     
-    gameOver: function () {
+    gameOver: function() {
         this.stop()
         if (confirm("GAME OVER. Play again?")) {
             this.reset()
@@ -162,7 +180,7 @@ var Game = {
         }
     },
     
-    hacerRecompesas: function () {
+    hacerRecompesas: function() {
         var src
         var random = this.selectRandom()
         if (random >= 1 && random <= 39) {
@@ -172,23 +190,24 @@ var Game = {
         } else if (random >= 51 && random <= 90) {
             src = "images/metro.png"
         }else {
-            src = "images/caja.png"
+            src = "images/caja-premio.png"
          }
         this.recompensas.push(new Recompensas(this, src))
     },
     
-    pintarMarcador: function () {
+    pintarMarcador: function() {
         this.puntuacion.update(this.score, this.ctx)
         this.tiempo.update(this.scores, this.ctx)
         
     },
     
-    selectRandom: function () {
+    selectRandom: function() {
         var random = Math.floor(Math.random() * 100) + 1
 
         return random
 
-    }
+    },
+
 }
 
 

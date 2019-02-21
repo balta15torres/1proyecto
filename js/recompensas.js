@@ -11,11 +11,11 @@ function Recompensas(game, src) {
     this.img.src = src
 }
 
-Recompensas.prototype.pintar = function () {
+Recompensas.prototype.pintar = function() {
     this.game.ctx.drawImage(this.img, this.x, this.y, this.w, this.h)
 }
 
-Recompensas.prototype.mover = function () {
+Recompensas.prototype.mover = function() {
     this.x -= this.dx
 }
 
