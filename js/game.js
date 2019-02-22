@@ -19,7 +19,7 @@ var Game = {
         this.soniFond = new Audio("sonido/fondo.mp3")
         this.soniFacil = new Audio("sonido/facil.mp3")
         this.gameOverImage = new Image();
-        this.gameOverImage.src = "images/over.png"
+        this.gameOverImage.src = "images/over-space1.png"
         this.reset()
         this.start()
     },
@@ -154,11 +154,11 @@ var Game = {
         if(this.scores > 0){
             dx = 11
         }if(this.scores > 6){
-            dx = 14
+            dx = 15
         } if (this.scores > 14){
-            dx = 18
-        } if (this.scores > 20){
             dx = 20
+        } if (this.scores > 20){
+            dx = 25
         }
          
         this.obstaculos.push(new Obstaculos(this, src, w, h, y, dx))
@@ -175,7 +175,9 @@ var Game = {
     },
     
     gameOver: function() {
-        
+        this.soniFond.pause() 
+        this.soniFond.currentTime = 0
+
         this.stop()
         this.ctx.drawImage(this.gameOverImage, 360, 80, 500, 600)
         // document.getElementById("gameOver").style.display = "block"

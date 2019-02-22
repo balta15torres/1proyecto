@@ -4,5 +4,12 @@ window.onload = function() {
     Game.init("canvas")
     document.getElementById("canvas").removeAttribute("class", "none");
     document.getElementById("home").classList.add("none");
+
+    document.onkeypress = function(e) {
+        if (e.keyCode === 32) {
+            Game.reset();
+            Game.start();
+        }
+    }
  }
 }
