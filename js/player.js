@@ -14,7 +14,7 @@ function Player(game) {
     //número de imágenes diferentes
     this.img.frames = 4
     this.img.frameIndex = 0
-    
+
     this.inmortal = false
     this.setListeners()
 
@@ -26,10 +26,10 @@ function Player(game) {
 
 }
 
-Player.prototype.pintar = function() {
+Player.prototype.pintar = function () {
     var img;
 
-    
+
     if (this.isJumping) {
         img = this.imgJump;
         this.moverImg(this.imgJump)
@@ -38,10 +38,10 @@ Player.prototype.pintar = function() {
         this.moverImg(this.img)
     }
     this.game.ctx.drawImage(img, img.frameIndex * Math.floor(img.width / img.frames), 0, Math.floor(img.width / img.frames), img.height, this.x, this.y, this.w, this.h)
-    
+
 },
 
-    Player.prototype.mover = function() {
+    Player.prototype.mover = function () {
 
         var gravity = 0.4
         // solo salta cuando el personaje está en el suelo
@@ -55,9 +55,9 @@ Player.prototype.pintar = function() {
         }
     }
 
-Player.prototype.setListeners = function() {
+Player.prototype.setListeners = function () {
 
-    document.onkeydown = function(event) {
+    document.onkeydown = function (event) {
 
         if (event.keyCode === this.game.keys.TOP_KEY && this.y == this.y0) {
 
@@ -67,11 +67,11 @@ Player.prototype.setListeners = function() {
 
             this.isJumping = true
         }
-        
+
     }.bind(this)
 }
 
-Player.prototype.moverImg = function(img) {
+Player.prototype.moverImg = function (img) {
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
     if (this.game.framesCounter % 8 === 0) {
         img.frameIndex += 1
