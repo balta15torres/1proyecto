@@ -16,6 +16,7 @@ var Game = {
         this.h = window.innerHeight
         this.canvas.width = this.w
         this.canvas.height = this.h
+        this.soniOver = new Audio("sonido/derrape.mp3")
         this.soniFond = new Audio("sonido/fondo.mp3")
         this.soniFacil = new Audio("sonido/facil.mp3")
         this.gameOverImage = new Image();
@@ -25,7 +26,6 @@ var Game = {
     },
 
     start: function () {
-
         this.soniFond.play()
         this.interval = setInterval(function () {
 
@@ -172,21 +172,16 @@ var Game = {
     },
 
     gameOver: function () {
+        this.soniOver.play()
         this.soniFond.pause()
         this.soniFond.currentTime = 0
 
         this.stop()
         this.ctx.drawImage(this.gameOverImage, 360, 80, 500, 600)
-        // document.getElementById("gameOver").style.display = "block"
-        console.log(this.gameOverImage)
+
         if (this.colisionObsta) {
             document.getElementsByClassName("over")
         }
-
-
-        // this.reset()
-        // this.start()
-
     },
 
     hacerRecompesas: function () {
