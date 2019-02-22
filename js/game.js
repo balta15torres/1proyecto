@@ -18,7 +18,7 @@ var Game = {
         this.canvas.height = this.h
         this.soniOver = new Audio("sonido/derrape.mp3")
         this.soniFond = new Audio("sonido/fondo.mp3")
-        this.soniFacil = new Audio("sonido/facil.mp3")
+        this.soniFacil = new Audio("sonido/brico.mp3")
         this.gameOverImage = new Image();
         this.gameOverImage.src = "images/gameOver.png"
         this.reset()
@@ -106,7 +106,8 @@ var Game = {
                 } else if (cadaRecompesa.img.src.includes("images/sierra.png")) {
                     this.score -= 25
                 } else if (cadaRecompesa.img.src.includes("images/caja.png")) {
-                    this.player.inmortal = true && this.soniFacil.play()
+                    this.player.inmortal = true 
+                    this.soniFacil.play()
                     setTimeout(function () {
                         this.player.inmortal = false
                     }.bind(this), 4000)
